@@ -14,6 +14,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +29,9 @@ SECRET_KEY = 'django-insecure-c4kd@(3y3q*wi6%rmgdpeoa&yhnu%hq#0t&p4@r6_pb8@5a@_)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# settings.py
+
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh", "api.nyumbani.xyz"]
 
 
 # Application definition
@@ -79,20 +83,42 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {},
+#     'users': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'listingz_users',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password123'
+#     },
+#     'listings': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'listingz_listings',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password123'
+#     }
+# }
+
+
 DATABASES = {
-    'default': {},
+    "default": {},
     'users': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'listingz_users',
-        'USER': 'postgres',
-        'PASSWORD': 'password123'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DB_NAME1"),
+        'USER': os.environ.get("DB_USER1"),
+        'PASSWORD': os.environ.get("DB_PASSWORD1"),
+        'HOST': os.environ.get("DB_HOST1"),
+        'PORT': os.environ.get("DB_PORT1"),
     },
     'listings': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'listingz_listings',
-        'USER': 'postgres',
-        'PASSWORD': 'password123'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT"),
     }
+    
 }
 
 DATABASE_ROUTERS = ['user.router.AuthRouter', 'listing.router.ListingRouter']
@@ -134,7 +160,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+
+# settings.py
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "ui/static")]
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "ui/staticfiles")
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
